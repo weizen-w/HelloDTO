@@ -1,10 +1,7 @@
-package spring.dto;
+package spring.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import spring.domain.City;
 import spring.domain.Event;
 

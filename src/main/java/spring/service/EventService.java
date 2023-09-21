@@ -2,11 +2,11 @@ package spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.domain.Event;
-import spring.dto.EventDTO;
+import spring.controller.dto.EventDTO;
 import spring.repository.EventRepository;
 
 /**
@@ -14,12 +14,12 @@ import spring.repository.EventRepository;
  *
  * @author Wladimir Weizen
  */
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class EventService {
 
-  @Autowired
-  private EventRepository eventRepository;
+  private final EventRepository eventRepository;
 
   public List<EventDTO> findAll() {
     List<Event> events = eventRepository.findAll();
