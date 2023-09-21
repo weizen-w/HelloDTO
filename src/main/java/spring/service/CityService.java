@@ -2,6 +2,7 @@ package spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,8 @@ import spring.repository.CityRepository;
  * @author Wladimir Weizen
  */
 @Service
+@Slf4j
 public class CityService {
-
-  static final Logger log = LoggerFactory.getLogger(CityService.class);
 
   @Autowired
   private CityRepository cityRepository;
@@ -32,6 +32,7 @@ public class CityService {
   }
 
   public CityDTO findById(Integer id) {
+    log.info("Get {} for the method", id);
     City city = cityRepository.findById(id).orElse(null);
     if (city != null) {
       CityDTO cityDTO = CityDTO.getInstance(city);
@@ -43,27 +44,39 @@ public class CityService {
   }
 
   public CityDTO add(CityDTO cityDTO) {
-    City city = new City(null, cityDTO.getTitle());
-    city = cityRepository.save(city);
-    return CityDTO.getInstance(city);
+    log.info("Get {} for the method", cityDTO);
+    if (cityDTO != null) {
+      City city = new City(null, cityDTO.getTitle());
+      city = cityRepository.save(city);
+      log.info("Save {} to City table", city);
+      return CityDTO.getInstance(city);
+    }
+    log.debug("City is null");
+    return null;
   }
 
   public CityDTO update(CityDTO cityDTO) {
+    log.info("Get {} for the method", cityDTO);
     City city = cityRepository.findById(cityDTO.getId()).orElse(null);
     if (city != null) {
       city.setTitel(cityDTO.getTitle());
       city = cityRepository.save(city);
+      log.info("Update city from City table: {} -> {}", city, cityDTO);
       return CityDTO.getInstance(city);
     }
+    log.debug("City is null or not found");
     return null;
   }
 
   public CityDTO delete(Integer id) {
+    log.info("Get {} for the method", id);
     City city = cityRepository.findById(id).orElse(null);
     if (city != null) {
       cityRepository.delete(city);
+      log.info("Delete {} from City table", city);
       return CityDTO.getInstance(city);
     }
+    log.debug("City is null or not found");
     return null;
   }
 }

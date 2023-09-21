@@ -1,6 +1,7 @@
 package spring.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,9 +15,7 @@ import spring.domain.Event;
  */
 
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class CityDTO {
 
   private Integer id;

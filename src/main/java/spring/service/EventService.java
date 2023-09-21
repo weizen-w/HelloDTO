@@ -2,8 +2,7 @@ package spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.domain.Event;
@@ -16,9 +15,8 @@ import spring.repository.EventRepository;
  * @author Wladimir Weizen
  */
 @Service
+@Slf4j
 public class EventService {
-
-  static final Logger log = LoggerFactory.getLogger(EventService.class);
 
   @Autowired
   private EventRepository eventRepository;
@@ -32,6 +30,7 @@ public class EventService {
   }
 
   public EventDTO findById(Integer id) {
+    log.info("Get {} for the method", id);
     Event event = eventRepository.findById(id).orElse(null);
     if (event != null) {
       EventDTO eventDTO = EventDTO.getInstance(event);
@@ -43,28 +42,40 @@ public class EventService {
   }
 
   public EventDTO add(EventDTO eventDTO) {
-    Event event = new Event(null, eventDTO.getName(), eventDTO.getCity());
-    event = eventRepository.save(event);
-    return EventDTO.getInstance(event);
+    log.info("Get {} for the method", eventDTO);
+    if (eventDTO != null) {
+      Event event = new Event(null, eventDTO.getName(), eventDTO.getCity());
+      event = eventRepository.save(event);
+      log.info("Save {} to Event table", event);
+      return EventDTO.getInstance(event);
+    }
+    log.debug("Event is null");
+    return null;
   }
 
   public EventDTO update(EventDTO eventDTO) {
+    log.info("Get {} for the method", eventDTO);
     Event event = eventRepository.findById(eventDTO.getId()).orElse(null);
     if (event != null) {
       event.setName(eventDTO.getName());
       event.setCity(eventDTO.getCity());
       event = eventRepository.save(event);
+      log.info("Update event from Event table: {} -> {}", event, eventDTO);
       return EventDTO.getInstance(event);
     }
+    log.debug("Event is null or not found");
     return null;
   }
 
   public EventDTO delete(Integer id) {
+    log.info("Get {} for the method", id);
     Event event = eventRepository.findById(id).orElse(null);
     if (event != null) {
       eventRepository.delete(event);
+      log.info("Delete {} from Event table", event);
       return EventDTO.getInstance(event);
     }
+    log.debug("Event is null or not found");
     return null;
   }
 }

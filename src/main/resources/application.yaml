@@ -1,6 +1,16 @@
 spring:
+  main:
+    banner-mode: off
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/cohort26
     username: postgres
     password: root
+  output:
+    ansi:
+      enabled: always
+logging:
+  file:
+    name: application.log
+  level:
+    root: info
