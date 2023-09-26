@@ -9,8 +9,8 @@ spring:
   output:
     ansi:
       enabled: always
-logging:
-  file:
-    name: application.log
-  level:
-    root: info
+#logging:
+#  file:
+#    name: application.log
+#  level:
+#    root: info

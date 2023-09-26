@@ -20,6 +20,7 @@ import spring.repository.EventRepository;
 public class EventService {
 
   private final EventRepository eventRepository;
+  private final CityService cityService;
 
   public List<EventDTO> findAll() {
     List<Event> events = eventRepository.findAll();
@@ -44,7 +45,7 @@ public class EventService {
   public EventDTO add(EventDTO eventDTO) {
     log.info("Get {} for the method", eventDTO);
     if (eventDTO != null) {
-      Event event = new Event(null, eventDTO.getName(), eventDTO.getCity());
+      Event event = new Event(null, eventDTO.getName(), cityService.findByName(eventDTO.getCity()));
       event = eventRepository.save(event);
       log.info("Save {} to Event table", event);
       return EventDTO.getInstance(event);
@@ -58,7 +59,7 @@ public class EventService {
     Event event = eventRepository.findById(eventDTO.getId()).orElse(null);
     if (event != null) {
       event.setName(eventDTO.getName());
-      event.setCity(eventDTO.getCity());
+      event.setCity(cityService.findByName(eventDTO.getCity()));
       event = eventRepository.save(event);
       log.info("Update event from Event table: {} -> {}", event, eventDTO);
       return EventDTO.getInstance(event);

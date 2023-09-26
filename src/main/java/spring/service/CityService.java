@@ -29,6 +29,15 @@ public class CityService {
     return cityDTOList;
   }
 
+  public City findByName(String title) {
+    City city = cityRepository.findByName(title);
+    if (city == null) {
+      city = new City(null, title);
+      city = cityRepository.save(city);
+    }
+    return city;
+  }
+
   public CityDTO findById(Integer id) {
     log.info("Get {} for the method", id);
     City city = cityRepository.findById(id).orElse(null);
